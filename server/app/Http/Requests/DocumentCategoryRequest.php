@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DocumentCategoryRequest extends FormRequest
 {
@@ -11,9 +12,9 @@ class DocumentCategoryRequest extends FormRequest
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
-{
-    return true;
-}
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -21,11 +22,26 @@ class DocumentCategoryRequest extends FormRequest
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
-    return [
-        'name' => 'required|string|max:255|unique:document_categories,name',
-        'description' => 'nullable|string|max:1000',
-        'is_active' => 'nullable|boolean',
-    ];
-}
+    {
+        return [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('document_categories', 'name')
+                    ->ignore($this->route('category')?->id),
+            ],
+
+            'description' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+
+            'is_active' => [
+                'nullable',
+                'boolean',
+            ],
+        ];
+    }
 }

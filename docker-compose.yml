@@ -1,0 +1,44 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: executive_clerk_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./server:/var/www
+      - storage:/var/www/storage
+    depends_on:
+      - mysql
+
+  nginx:
+    image: nginx:alpine
+    container_name: executive_clerk_nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./server:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    container_name: executive_clerk_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: executive_clerk
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+  storage:

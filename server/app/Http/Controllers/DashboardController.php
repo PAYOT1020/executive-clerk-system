@@ -3,20 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use Carbon\Carbon;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(): View
-    {
-        return view('dashboard.index', [
-            'totalDocuments' => Document::count(),
+    public function index()
+{
+    $totalDocuments = Document::count();
 
-'pendingDocuments' => Document::where('current_status', 'received')->count(),
+    $receivedDocuments = Document::where('current_status', 'received')->count();
 
-'forSignature' => Document::where('current_status', 'for_signature')->count(),
+    $forSignatureDocuments = Document::where('current_status', 'for_signature')->count();
 
-'releasedDocuments' => Document::where('current_status', 'released')->count(),
-        ]);
-    }
+    $releasedDocuments = Document::where('current_status', 'released')->count();
+
+    $checkingDocuments = Document::where('current_status', 'checking')->count();
+
+    return view('dashboard.index', compact(
+        'totalDocuments',
+        'receivedDocuments',
+        'checkingDocuments',
+        'forSignatureDocuments',
+        'releasedDocuments'
+    ));
+}
 }

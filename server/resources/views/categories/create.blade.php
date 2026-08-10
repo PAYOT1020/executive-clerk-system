@@ -23,9 +23,13 @@
                 <input
                     type="text"
                     name="name"
-                    class="form-control"
+                    class="form-control @error('name') is-invalid @enderror"
                     value="{{ old('name') }}"
                     required>
+
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
 
             </div>
 
@@ -35,8 +39,12 @@
 
                 <textarea
                     name="description"
-                    class="form-control"
+                    class="form-control @error('description') is-invalid @enderror"
                     rows="3">{{ old('description') }}</textarea>
+
+                @error('description')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
 
             </div>
 
@@ -62,13 +70,14 @@
 
                 Save
 
-            </button>
+        </button>
+        <button
+                class="btn btn-secondary" href="{{ route('categories.index') }}">
 
-            <a
-                href="{{ route('categories.index') }}"
-                class="btn btn-secondary">
+            Cancel
 
-                Cancel
+
+        </button>
 
             </a>
 

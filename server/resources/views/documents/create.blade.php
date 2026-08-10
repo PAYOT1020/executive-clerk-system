@@ -3,157 +3,163 @@
 @section('title', 'Receive Document')
 
 @section('content_header')
-    <h1>Receive New Document</h1>
+    <h1>Receive Document</h1>
 @stop
 
 @section('content')
 
 <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Document Information</h3>
-    </div>
 
-    <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    <div class="card-body">
 
-        <div class="card-body">
+        <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
+
+            @csrf
 
             <div class="row">
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Document Type</label>
+                <div class="col-md-6 mb-3">
 
-                        <select name="category_id" class="form-control" required>
+                    <label class="form-label">Document Type</label>
 
-                            <option value="">Select Document Type</option>
+                    <select
+                        name="category_id"
+                        class="form-control @error('category_id') is-invalid @enderror"
+                        required>
 
-                            @foreach($categories as $category)
+                        <option value="">-- Select Document Type --</option>
 
-                                <option value="{{ $category->id }}">
-                                    {{ $category->name }}
-                                </option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
 
-                            @endforeach
+                    </select>
 
-                        </select>
-                    </div>
+                    @error('category_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3">
 
-                    <div class="form-group">
+                    <label class="form-label">Date Received</label>
 
-                        <label>Date Received</label>
+                    <input
+                        type="date"
+                        name="date_received"
+                        class="form-control @error('date_received') is-invalid @enderror"
+                        value="{{ old('date_received', now()->format('Y-m-d')) }}"
+                        required>
 
-                        <input
-                            type="date"
-                            name="date_received"
-                            class="form-control"
-                            value="{{ date('Y-m-d') }}"
-                            required>
-
-                    </div>
+                    @error('date_received')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
 
                 </div>
 
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
 
-                <label>Subject</label>
+                <label class="form-label">Subject</label>
 
                 <input
                     type="text"
                     name="subject"
-                    class="form-control"
+                    class="form-control @error('subject') is-invalid @enderror"
+                    value="{{ old('subject') }}"
                     required>
+
+                @error('subject')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
 
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
 
-                <label>Sender</label>
+                <label class="form-label">Sender</label>
 
                 <input
                     type="text"
                     name="sender"
-                    class="form-control"
+                    class="form-control @error('sender') is-invalid @enderror"
+                    value="{{ old('sender') }}"
                     required>
+
+                @error('sender')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
 
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
 
-                <label>Assign Executive Clerk</label>
+                <label class="form-label">Assign To (Executive Clerk)</label>
 
-                <select
-                    name="assigned_to"
-                    class="form-control"
-                    required>
+                <select name="assigned_to" class="form-control @error('assigned_to') is-invalid @enderror">
 
-                    <option value="">Select Executive Clerk</option>
+                    <option value="">-- Leave Unassigned --</option>
 
-                    @foreach($executiveClerks as $user)
-
-                        <option value="{{ $user->id }}">
-                            {{ $user->name }}
+                    @foreach($executiveClerks as $clerk)
+                        <option value="{{ $clerk->id }}" {{ old('assigned_to') == $clerk->id ? 'selected' : '' }}>
+                            {{ $clerk->name }}
                         </option>
-
                     @endforeach
 
                 </select>
 
-            </div>
-
-            <div class="form-group">
-
-                <label>Remarks</label>
-
-                <textarea
-                    name="remarks"
-                    rows="4"
-                    class="form-control"></textarea>
+                @error('assigned_to')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
 
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
 
-                <label>Upload Document</label>
+                <label class="form-label">Attach File (optional)</label>
 
                 <input
                     type="file"
                     name="document_file"
-                    class="form-control">
+                    class="form-control @error('document_file') is-invalid @enderror"
+                    accept=".pdf,.jpg,.jpeg,.png">
 
-                <small class="text-muted">
-                    PDF, JPG, JPEG or PNG
-                </small>
+                <small class="form-text text-muted">Accepted: PDF, JPG, PNG. Max 10MB.</small>
+
+                @error('document_file')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
 
             </div>
 
-        </div>
+            <div class="mb-3">
 
-        <div class="card-footer">
+                <label class="form-label">Remarks</label>
 
-            <button class="btn btn-primary">
+                <textarea
+                    name="remarks"
+                    class="form-control @error('remarks') is-invalid @enderror"
+                    rows="3">{{ old('remarks') }}</textarea>
 
-                <i class="fas fa-save"></i>
+                @error('remarks')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
 
-                Save Document
+            </div>
 
-            </button>
+            <button class="btn btn-success">Save</button>
 
-            <a href="{{ route('documents.index') }}"
-               class="btn btn-secondary">
-
+            <a href="{{ route('documents.index') }}" class="btn btn-secondary">
                 Cancel
-
             </a>
 
-        </div>
+        </form>
 
-    </form>
+    </div>
 
 </div>
 

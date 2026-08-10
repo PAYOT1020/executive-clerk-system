@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\DocumentCategory;
 use App\Models\User;
+use App\Models\DocumentFile;
+use App\Models\DocumentStatusHistory;
+use App\Models\DocumentAssignment;
 
 class Document extends Model
 {
@@ -22,6 +25,13 @@ class Document extends Model
         'assigned_to',
         'remarks',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'date_received' => 'date',
+        ];
+    }
 
     public function category(): BelongsTo
     {
@@ -46,5 +56,10 @@ class Document extends Model
     public function statusHistories(): HasMany
     {
         return $this->hasMany(DocumentStatusHistory::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(DocumentAssignment::class);
     }
 }

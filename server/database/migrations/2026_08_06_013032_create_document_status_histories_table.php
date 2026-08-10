@@ -12,19 +12,17 @@ return new class extends Migration
 
             $table->id();
 
-            $table->foreignId('user_id')
+            $table->foreignId('document_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('action');
+            $table->string('status');
 
-            $table->string('module');
+            $table->text('remarks')->nullable();
 
-            $table->unsignedBigInteger('record_id')->nullable();
-
-            $table->text('description')->nullable();
-
-            $table->ipAddress('ip_address')->nullable();
+            $table->foreignId('updated_by')
+                ->constrained('users')
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });

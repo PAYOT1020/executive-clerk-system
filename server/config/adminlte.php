@@ -319,9 +319,9 @@ return [
     ],
 
     [
-        'text' => 'Repository',
-        'url'  => 'repository',
-        'icon' => 'fas fa-archive',
+        'text' => 'Archive',
+        'route' => 'archive.index',
+        'icon' => 'fas fa-fw fa-archive',
     ],
 
     [
@@ -331,9 +331,9 @@ return [
     ],
 
     [
-        'text' => 'Users',
-        'url'  => 'users',
-        'icon' => 'fas fa-users',
+        'text' => 'Profile',
+        'url'  => 'profile',
+        'icon' => 'fas fa-user',
     ],
 
     [

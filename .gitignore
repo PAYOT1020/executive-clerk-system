@@ -1,0 +1,14 @@
+# InfinityFree deployment folders
+/infinityfree-deploy/
+/infinityfree-final/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Archives
+*.zip
+
+# Database backups
+*.sql

@@ -1,12 +1,7 @@
-# Environment / deployment secrets
-.env.infinityfree
-.env.*
-# Deployment copies and archives
-/infinityfree-deploy/
-/infinityfree-final/
-*.zip
-# Database backups
-*.sql
+# Deployment-specific Composer files
+composer.dev.json
+composer.dev.lock
+composer.production.json
 *.log
 .DS_Store
 .env

@@ -43,7 +43,6 @@ class DocumentController extends Controller
 
         return view('documents.create', compact('categories', 'executiveClerks'));
     }
-
     public function store(StoreDocumentRequest $request)
     {
         $document = $this->documentService->store(
@@ -102,15 +101,14 @@ class DocumentController extends Controller
     {
         //
     }
+        public function assignForm(Document $document)
+        {
+            $executiveClerks = User::where('role', 'executive_clerk')
+                ->where('id', '!=', auth()->id())
+                ->get();
 
-    public function assignForm(Document $document)
-    {
-        $executiveClerks = User::where('role', 'executive_clerk')
-            ->where('id', '!=', auth()->id())
-            ->get();
-
-        return view('documents.assign', compact('document', 'executiveClerks'));
-    }
+            return view('documents.assign', compact('document', 'executiveClerks'));
+        }
 
     public function assign(AssignDocumentRequest $request, Document $document)
     {

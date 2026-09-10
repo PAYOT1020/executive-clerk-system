@@ -8,14 +8,25 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DocumentArchiveController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::middleware(['auth', 'admin'])//ADMIN MIDDLEWARE
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
+});
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+
 
 Route::middleware(['auth'])->group(function () {
 

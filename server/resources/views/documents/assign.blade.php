@@ -33,7 +33,8 @@
                     <option value="">-- Select Executive Clerk --</option>
 
                     @foreach($executiveClerks as $clerk)
-                        <option value="{{ $clerk->id }}" {{ old('assigned_to') == $clerk->id ? 'selected' : '' }}>
+                        <option value="{{ $clerk->id }}"
+                            {{ old('assigned_to') == $clerk->id ? 'selected' : '' }}>
                             {{ $clerk->name }}
                         </option>
                     @endforeach

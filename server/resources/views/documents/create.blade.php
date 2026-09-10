@@ -118,23 +118,6 @@
 
             </div>
 
-            <div class="mb-3">
-
-                <label class="form-label">Attach File (optional)</label>
-
-                <input
-                    type="file"
-                    name="document_file"
-                    class="form-control @error('document_file') is-invalid @enderror"
-                    accept=".pdf,.jpg,.jpeg,.png">
-
-                <small class="form-text text-muted">Accepted: PDF, JPG, PNG. Max 10MB.</small>
-
-                @error('document_file')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-
-            </div>
 
             <div class="mb-3">
 
